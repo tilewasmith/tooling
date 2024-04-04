@@ -1,5 +1,2 @@
-.git
-.gitignore
-LICENSE
-README.md
-CHANGELOG.md
+Dockerfile
+charts/
