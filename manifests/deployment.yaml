@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-demo
+  labels:
+    app: php-demo
+  namespace: aks-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-demo
+  template:
+    metadata:
+      labels:
+        app: php-demo
+    spec:
+      containers:
+        - name: php-demo
+          image: trialdemo.azurecr.io/mydeployment-1712262394518:latest
+          ports:
+            - containerPort: 80

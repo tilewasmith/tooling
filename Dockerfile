@@ -1,13 +1,11 @@
-FROM php:7-apache
-MAINTAINER Dare dare@zooto.io
+FROM composer:2.5 AS build-env
+COPY . /app
+RUN cd /app && composer install
 
-RUN docker-php-ext-install mysqli
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
-COPY start-apache /usr/local/bin
-RUN a2enmod rewrite
-
-# Copy application source
-COPY html /var/www
-RUN chown -R www-data:www-data /var/www
-
-CMD ["start-apache"]
+FROM php:8.2-apache
+ENV PORT 80
+EXPOSE 80
+COPY --from=build-env /app /var/www/html
+RUN usermod -u 1000 www-data; \
+    a2enmod rewrite; \
+    chown -R www-data:www-data /var/www/html
